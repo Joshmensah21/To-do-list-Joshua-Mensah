@@ -1,0 +1,115 @@
+
+body{
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    
+}
+
+#main-container{
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction:column;
+    min-height: 100vh;
+    min-width: 90vw;
+    background-color:bisque;
+    border: solid 2px red;
+}
+
+
+.fa-plus {
+    font-size: 20px;
+    border: solid 1px black;
+}
+
+.fa-plus:hover{
+    cursor: pointer;
+}
+
+.type-task-space{
+    display:flex;
+    font-size: 22px;
+    gap: 4px;
+    /*border:solid 2px blue;*/
+}
+
+#type-task{
+    width: 224px;
+}
+
+#task-list-display{
+    margin-top: 40vh;
+    margin-bottom: 10vh;
+    width: 70vw;
+    height: 60vh;
+    border: solid 1px black;
+}
+
+    .list-of-tasks{
+        list-style:none;
+        padding-left: 0; 
+        margin-left: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+        .edit-button{
+            width:30px;
+            height: 30px;
+        }
+        .delete-button{
+            width: 30px;
+            height: 30px;
+        }
+    .empty-message {
+    color: black;
+    font-style: italic;
+    margin-top: 10px;
+    display: none;
+    
+    }
+
+#edit-pop-up{
+    margin: 0 auto;
+    display:none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 40vw;
+    height: 20vh;
+    gap: 20px;
+    background-color:rgb(211, 157, 86);
+    border: solid 2px black;
+}
+    #edit-tasktext{
+        width: 90%;
+        height: 20px;
+    }
+        #button-container{
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+        }
+
+            #save-btn{
+                background-color: green;
+                color: white;
+                width: 80px;
+                height: 40px;
+                border: solid 1px black;
+                border-radius: 16px;
+                cursor:pointer;
+            }
+
+            #cancel-btn{
+                background-color: red;
+                color: white;
+                width: 80px;
+                height: 40px;
+                border: solid 1px black;
+                border-radius: 16px;
+                cursor:pointer;
+            }

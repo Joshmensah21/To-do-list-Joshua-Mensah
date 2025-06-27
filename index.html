@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <title>To-do-list</title>
+</head>
+<body>
+    <div id="main-container">
+        <h1 class="main-title">My To-Do List</h1>
+        <div id="task-input-section">
+            <label for="type-task" class="type-task-space">
+                <input type="text" id="type-task" name="user-type-task" placeholder="Create a new task e.g. Wash the car">
+                <i class="fa-solid fa-plus"></i>
+            </label>
+        </div>
+        <div id="task-list-display">
+            <ol class="list-of-tasks">
+                <li class="empty-message"></li>
+            </ol>
+            <!--EDIT POP UP-->
+            <div id="edit-pop-up">
+                <input id="edit-tasktext">
+                    <div id="button-container">
+                        <button id="save-btn">Save</button>
+                        <button id="cancel-btn">Cancel</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <script src="./script.js"></script>
+</body>
+</html>
