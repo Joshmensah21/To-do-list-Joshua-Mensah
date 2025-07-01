@@ -5,7 +5,12 @@ let plusButton = document.querySelector('.fa-solid.fa-plus');
 let input = document.getElementById('type-task');
 let tasks = document.querySelector('.list-of-tasks');
 let emptyMsgSpace = document.querySelector('.empty-message');
-
+let popUp = document.getElementById("edit-pop-up");
+let popUpInput = document.getElementById("edit-tasktext");
+const saveBtn = document.getElementById("save-btn");
+const cancelBtn = document.getElementById("cancel-btn");
+let taskTextElement = document.createElement("p");
+let currentTaskElement;
 
 function contentChecker(){
     let taskList = tasks.querySelectorAll('li:not(.empty-message)');
@@ -42,19 +47,12 @@ function createTaskElement(taskText){
     //EDIT TASK
     
     function editTask(){
-    const popUp = document.getElementById("edit-pop-up");
-    const popUpInput = document.getElementById("edit-tasktext");
-    const saveBtn = document.getElementById("save-btn");
-    const cancelBtn = document.getElementById("cancel-btn");
-
         editBtn.addEventListener("click",()=>{
-        popUpInput.value=taskTextElement.textContent;
+        currentTaskElement = taskTextElement;
+        popUpInput.value=currentTaskElement.textContent;
         popUp.style.display="flex";
-        editBtn.parentElement;
         
-
         })
-        
     }
     editTask();
     
@@ -77,17 +75,19 @@ function createTaskElement(taskText){
 
     return newTask;
 }
+        saveBtn.addEventListener("click",()=>{
+        currentTaskElement.textContent = popUpInput.value;
+        popUp.style.display="none";
+        })
 
-    saveBtn.addEventListener("click",()=>{
+        cancelBtn.addEventListener("click",()=>{
         popUp.style.display="none";
-        taskTextElement.textContent=popUpInput.value;
-    })
-    cancelBtn.addEventListener("click",()=>{
-        popUp.style.display="none";
-    })
+        })
+    
 
 //ADD A TASK BY PLUS BUTTON
     plusButton.addEventListener("click", ()=>{
+        console.log('Add task triggered')
         //New Task
         let newTask = createTaskElement(input.value);
         tasks.appendChild(newTask);
@@ -99,6 +99,7 @@ function createTaskElement(taskText){
 // ADD A TASK BY ENTER KEY
 
 input.addEventListener("keydown",(event)=>{
+    console.log('Add task triggered')
     if(event.key==='Enter'){
         //New Task
         let newTask = createTaskElement(input.value);
