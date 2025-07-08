@@ -9,10 +9,11 @@ let popUpInput = document.getElementById("edit-tasktext");
 const saveBtn = document.getElementById("save-btn");
 const cancelBtn = document.getElementById("cancel-btn");
 let taskTextElement = document.createElement("p");
-let currentTaskElement;
+let taskTextSpace;
 let tasksArray = [];
 let taskIdCounter = 0;
 let idSelectedTask;
+let idSelectedConvTask;
 
 
 function contentChecker(){
@@ -62,8 +63,8 @@ function createTaskElement(taskText){
     
     function editTask(){
         editBtn.addEventListener("click",()=>{
-        currentTaskElement = taskTextElement;
-        popUpInput.value=currentTaskElement.textContent;
+        taskTextSpace = taskTextElement;
+        popUpInput.value=taskTextSpace.textContent;
         popUp.style.display="flex";
         
         const selectedTask = editBtn.parentElement;
@@ -95,6 +96,7 @@ function createTaskElement(taskText){
     deleteBtn.addEventListener("click",()=>{
         newTask.remove();
         contentChecker();
+
         if(taskList.length === 0){
         emptyMsgSpace.textContent="Empty. Add a new task!";
         emptyMsgSpace.style.display="block";
@@ -109,6 +111,62 @@ function createTaskElement(taskText){
     return newTask;
 
 }
+
+function objectToTask (taskObject){
+    let convTask = document.createElement("li");
+
+    let convCheckbox = document.createElement("input");
+    convCheckbox.type = "checkbox";
+    convCheckbox.checked = taskObject.completed;
+    convTask.appendChild(convCheckbox);
+
+    let convTaskText = document.createElement("p");
+    convTaskText.textContent = taskObject.text; 
+    convTask.appendChild(convTaskText);
+
+    let convEditBtn = document.createElement("button");
+    convEditBtn.textContent = "Edit";
+    convTask.appendChild(convEditBtn);
+
+    let convDeleteBtn = document.createElement("button");
+    convDeleteBtn.textContent = "Delete";
+    convTask.appendChild(convDeleteBtn);
+
+    //CHECKBOX LISTENER
+    convCheckbox.addEventListener("click", ()=>{
+        const currentTask = convCheckbox.parentElement;
+        const idSelectedTask = currentTask.getAttribute("id");
+        const idSelectedTaskNumber = parseInt(idSelectedTask);
+        const taskTicked = tasksArray.find((taskObject)=>taskObject.id===idSelectedTaskNumber);
+        taskTicked.completed = convCheckbox.checked;
+        console.log(taskTicked);
+    })
+    
+    //EDIT LISTENER
+        convEditBtn.addEventListener("click",()=>{
+        popUpInput.value = convTaskText.textContent;
+        popUp.style.display="flex";
+        
+        const selectedConvTask = convEditBtn.parentElement;
+        idSelectedConvTask = selectedConvTask.getAttribute("id");
+        
+        })
+    }
+
+    //DELETE LISTENER
+
+    deleteBtn.addEventListener("click",()=>{
+        const currentTask = convDeleteBtn.parentElement;
+        const idSelectedTask = currentTask.getAttribute("id");
+        const idSelectedTaskNumber = parseInt(idSelectedTask);
+        const arrayAfterDel = tasksArray.filter((taskObject)=> taskObject.id!==idSelectedTaskNumber);
+        tasksArray = arrayAfterDel;
+        const arrayAfterDelString = JSON.stringify(arrayAfterDel);
+        localStorage.setItem("updatedArray",arrayAfterDelString);
+
+    })
+
+
     
 //CREATE A TASK BY PLUS BUTTON
 
@@ -137,13 +195,13 @@ input.addEventListener("keydown",(event)=>{
 
 //SAVE BUTTON
     saveBtn.addEventListener("click",()=>{
-    currentTaskElement.textContent = popUpInput.value;
+    taskTextSpace.textContent = popUpInput.value;
     popUp.style.display="none";
 
     let idSelectedTaskNumber = parseInt(idSelectedTask);
     const taskToUpdate = tasksArray.find((currentObject)=>currentObject.id===idSelectedTaskNumber);
     taskToUpdate.text = popUpInput.value;
-    currentTaskElement.textContent = popUpInput.value;
+    taskTextSpace.textContent = popUpInput.value;
     popUp.style.display="none";
 
     //const matchedId = tasksArray.find(tasksObject.id===idSelectedTask);
