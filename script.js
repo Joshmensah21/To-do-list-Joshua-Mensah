@@ -141,6 +141,12 @@ function objectToTask (taskObject){
         taskTicked.completed = convCheckbox.checked;
         console.log(taskTicked);
     })
+
+    function saveToLocalStorage(){
+        const stringOfTasks = JSON.stringify(tasksArray);
+        localStorage.setItem('taskList', stringOfTasks);
+    }
+    console.log(saveToLocalStorage());
     
     //EDIT LISTENER
         convEditBtn.addEventListener("click",()=>{
