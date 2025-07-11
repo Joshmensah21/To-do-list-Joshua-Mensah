@@ -56,6 +56,14 @@ body{
         flex-direction: column;
         gap: 40px;
     }
+        .completed-task{
+            text-decoration: line-through;
+            opacity: 0.3;
+        }
+            .completed-task:hover{
+                cursor: pointer;
+                opacity: 0.6;
+            }
         .edit-button{
             width:30px;
             height: 30px;
@@ -64,6 +72,7 @@ body{
             width: 30px;
             height: 30px;
         }
+
     .empty-message {
     color: black;
     font-style: italic;

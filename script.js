@@ -16,24 +16,12 @@ let idSelectedTask;
 let idSelectedConvTask;
 
 
-function contentChecker(){
-    let taskList = tasks.querySelectorAll('li:not(.empty-message)');
-    if(taskList.length === 0){
-        emptyMsgSpace.textContent = "Empty. Add a new task!";
-        emptyMsgSpace.style.display = "block";
-    } else {
-        emptyMsgSpace.style.display = "none";
-    }
-    console.log('Tasks count:', taskList.length);
-}
-contentChecker();
-
 function saveTasksToLocalStorage(){
     const stringOfTasks = JSON.stringify(tasksArray);
     localStorage.setItem('taskList', stringOfTasks);
 }
 
-function loadTaskFromLocalStorage(){
+function loadTasksFromLocalStorage(){
     const retrievedData = localStorage.getItem('taskList');
 
     if(retrievedData===null){
@@ -60,7 +48,19 @@ function loadTaskFromLocalStorage(){
 
         }
 }
+loadTasksFromLocalStorage();
 
+function contentChecker(){
+    let taskList = tasks.querySelectorAll('li:not(.empty-message)');
+    if(taskList.length === 0){
+        emptyMsgSpace.textContent = "Empty. Add a new task!";
+        emptyMsgSpace.style.display = "block";
+    } else {
+        emptyMsgSpace.style.display = "none";
+    }
+    console.log('Tasks count:', taskList.length);
+}
+contentChecker();
 
 function createTaskElement(taskText){
     let newTask = document.createElement("li");
@@ -92,10 +92,15 @@ function createTaskElement(taskText){
     console.log(tasksArray);
 
     taskIdCounter++;
+
+    return newTask;
 }
 
 function objectToTask (taskObject){
     let convTask = document.createElement("li");
+    if (taskObject.completed===true){ 
+        convTask.classList.add("completed-task"); 
+    }
 
     let convCheckbox = document.createElement("input");
     convCheckbox.type = "checkbox";
@@ -114,7 +119,9 @@ function objectToTask (taskObject){
     convDeleteBtn.textContent = "Delete";
     convTask.appendChild(convDeleteBtn);
     
+    return convTask;
     }
+
 
 //EVENT DELEGATION
     tasks.addEventListener("click",(event)=>{
@@ -147,6 +154,7 @@ function objectToTask (taskObject){
 
         } else if(event.target.type==="checkbox"){
             let checkedTask = event.target.parentElement;
+            checkedTask.classList.toggle("completed-task");
             const idSelectedTaskNumber = parseInt(checkedTask.id);
             let corrTaskObject = tasksArray.find(taskObject=>taskObject.id=== idSelectedTaskNumber); // finding corresponding taskObject to checked task
             corrTaskObject.completed = event.target.checked;
