@@ -28,6 +28,40 @@ function contentChecker(){
 }
 contentChecker();
 
+function saveTasksToLocalStorage(){
+    const stringOfTasks = JSON.stringify(tasksArray);
+    localStorage.setItem('taskList', stringOfTasks);
+}
+
+function loadTaskFromLocalStorage(){
+    const retrievedData = localStorage.getItem('taskList');
+
+    if(retrievedData===null){
+            tasksArray=[];
+            taskIdCounter=0;
+            return;
+    } else{
+        tasksArray = JSON.parse(retrievedData);
+        tasks.innerHTML = ''; //clears existing tasks displayd on page to prevent duplicates
+        tasksArray.forEach(function(taskObject){
+            const retrievedTask = objectToTask(taskObject);
+            tasks.appendChild(retrievedTask);
+        })
+            
+        if(tasksArray.length > 0){
+            const arrayOfIds = tasksArray.map((tasksObject)=>{
+            return Number(tasksObject.id);
+            })
+                    
+            const highestIdNum = Math.max(...arrayOfIds);
+            taskIdCounter = highestIdNum+1;
+        }
+            
+
+        }
+}
+
+
 function createTaskElement(taskText){
     let newTask = document.createElement("li");
     newTask.setAttribute("id",taskIdCounter);
@@ -58,58 +92,6 @@ function createTaskElement(taskText){
     console.log(tasksArray);
 
     taskIdCounter++;
-
-    //EDIT TASK
-    
-    function editTask(){
-        editBtn.addEventListener("click",()=>{
-        taskTextSpace = taskTextElement;
-        popUpInput.value=taskTextSpace.textContent;
-        popUp.style.display="flex";
-        
-        const selectedTask = editBtn.parentElement;
-        idSelectedTask = selectedTask.getAttribute("id");
-        
-        })
-    }
-    editTask();
-    
-    //CHECK OFF TASK
-    checkbox.addEventListener("click", ()=>{
-        const currentTask = checkbox.parentElement;
-        const idSelectedTask = currentTask.getAttribute("id");
-        const idSelectedTaskNumber = parseInt(idSelectedTask);
-        const taskTicked = tasksArray.find((currentObject)=>currentObject.id===idSelectedTaskNumber);
-        if(checkbox.checked===true){
-            taskTicked.completed=true;
-    //UNCHECKED TASK
-        } else if(checkbox.checked===false){
-            taskTicked.completed=false;
-        }
-        console.log(taskTicked);
-    })
-
-    //DELETE TASK
-
-    function deleteTask(){
-    let taskList = tasks.querySelectorAll('li:not(.empty-message)');
-    deleteBtn.addEventListener("click",()=>{
-        newTask.remove();
-        contentChecker();
-
-        if(taskList.length === 0){
-        emptyMsgSpace.textContent="Empty. Add a new task!";
-        emptyMsgSpace.style.display="block";
-        tasksArray.splice(0,1);
-        }
-        
-    })
-    }   
-    
-    deleteTask();
-
-    return newTask;
-
 }
 
 function objectToTask (taskObject){
@@ -131,48 +113,46 @@ function objectToTask (taskObject){
     let convDeleteBtn = document.createElement("button");
     convDeleteBtn.textContent = "Delete";
     convTask.appendChild(convDeleteBtn);
-
-    //CHECKBOX LISTENER
-    convCheckbox.addEventListener("click", ()=>{
-        const currentTask = convCheckbox.parentElement;
-        const idSelectedTask = currentTask.getAttribute("id");
-        const idSelectedTaskNumber = parseInt(idSelectedTask);
-        const taskTicked = tasksArray.find((taskObject)=>taskObject.id===idSelectedTaskNumber);
-        taskTicked.completed = convCheckbox.checked;
-        console.log(taskTicked);
-    })
-
-    function saveToLocalStorage(){
-        const stringOfTasks = JSON.stringify(tasksArray);
-        localStorage.setItem('taskList', stringOfTasks);
-    }
-    console.log(saveToLocalStorage());
     
-    //EDIT LISTENER
-        convEditBtn.addEventListener("click",()=>{
-        popUpInput.value = convTaskText.textContent;
-        popUp.style.display="flex";
-        
-        const selectedConvTask = convEditBtn.parentElement;
-        idSelectedConvTask = selectedConvTask.getAttribute("id");
-        
-        })
     }
 
-    //DELETE LISTENER
+//EVENT DELEGATION
+    tasks.addEventListener("click",(event)=>{
 
-    deleteBtn.addEventListener("click",()=>{
-        const currentTask = convDeleteBtn.parentElement;
-        const idSelectedTask = currentTask.getAttribute("id");
-        const idSelectedTaskNumber = parseInt(idSelectedTask);
-        const arrayAfterDel = tasksArray.filter((taskObject)=> taskObject.id!==idSelectedTaskNumber);
-        tasksArray = arrayAfterDel;
-        const arrayAfterDelString = JSON.stringify(arrayAfterDel);
-        localStorage.setItem("updatedArray",arrayAfterDelString);
+        //Edit Button Code
+        if(event.target.tagName==="BUTTON" && event.target.textContent==="Edit"){
+        let taskToEdit = event.target.parentElement;
+        let textElement = taskToEdit.querySelector("p");
+        let textToEdit = textElement.textContent;
+        
+        popUpInput.value=textToEdit;
+        popUp.style.display="flex";
 
+        taskTextSpace = textElement;
+
+        idSelectedTask = taskToEdit.getAttribute("id");
+        
+        //Delete Button Code below...
+
+        } else if(event.target.tagName==="BUTTON" && event.target.textContent==="Delete"){
+            let taskToDelete = event.target.parentElement;
+            taskToDelete.remove();
+            
+            const idSelectedTaskNumber = parseInt(taskToDelete.id);
+            tasksArray = tasksArray.filter(taskObject => taskObject.id !== idSelectedTaskNumber);
+            contentChecker();
+            saveTasksToLocalStorage();
+
+        //Checkbox Code Below...
+
+        } else if(event.target.type==="checkbox"){
+            let checkedTask = event.target.parentElement;
+            const idSelectedTaskNumber = parseInt(checkedTask.id);
+            let corrTaskObject = tasksArray.find(taskObject=>taskObject.id=== idSelectedTaskNumber); // finding corresponding taskObject to checked task
+            corrTaskObject.completed = event.target.checked;
+            saveTasksToLocalStorage();
+        } 
     })
-
-
     
 //CREATE A TASK BY PLUS BUTTON
 
@@ -182,7 +162,6 @@ function objectToTask (taskObject){
         tasks.appendChild(newTask);
         input.value="";
         contentChecker();
-        
 });
 
 // CREATE A TASK BY ENTER KEY
@@ -209,9 +188,8 @@ input.addEventListener("keydown",(event)=>{
     taskToUpdate.text = popUpInput.value;
     taskTextSpace.textContent = popUpInput.value;
     popUp.style.display="none";
-
-    //const matchedId = tasksArray.find(tasksObject.id===idSelectedTask);
     
+    saveTasksToLocalStorage();
     })
 
 //CANCEL BUTTON
