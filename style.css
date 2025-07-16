@@ -1,24 +1,41 @@
+@font-face{
+    font-family: 'Inter';
+    src: url("./Fonts/Inter_18pt-Regular.ttf") format('truetype');
 
+}
 body{
     overflow-x: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    
+
+    font-size: 16px;
+    background-color: #577596;
+
 }
+
+/*PRACTICE*/
+
+/*PRACTICE*/
 
 #main-container{
     display:flex;
     justify-content: flex-start;
     align-items: center;
     flex-direction:column;
-    min-height: 100vh;
-    min-width: 90vw;
-    background-color:bisque;
-    border: solid 2px red;
+    width: 90%;
+    height: 90vh;
+    background-color:#2196F3;
+    border: solid 4px #F2A122;
 }
-
+    .main-title{
+    font-family: "Poppins", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    color: white;
+    
+    }
 
 .fa-plus {
     font-size: 20px;
@@ -41,11 +58,11 @@ body{
 }
 
 #task-list-display{
-    margin-top: 40vh;
+    margin-top: 10vh;
     margin-bottom: 10vh;
-    width: 70vw;
+    width: 40vw;
     height: 60vh;
-    border: solid 1px black;
+    border: solid 2px black;
 }
 
     .list-of-tasks{
@@ -56,6 +73,45 @@ body{
         flex-direction: column;
         gap: 40px;
     }
+        .task-li{
+            font-family: 'Inter';
+            display: flex;
+            flex-direction: column;
+            
+        }
+
+            .task-div{
+                display: flex;
+                flex-flow: column wrap;
+                border: solid 3px darkgreen;
+            }
+                .task-text{
+                font-family:'Inter';
+                display: inline;
+                }
+                .checkntext-div{
+                    display: flex;
+                    flex-direction: row;
+                }
+
+            .button-div{
+                    display: flex;
+                    flex-direction: row;
+                }
+                .edit-btn{
+                    cursor: pointer;
+                    margin-right: 8px;
+                    width: 64px;
+                    height: 32px;
+                    background-color:#F2A122;
+                }
+                .delete-btn{
+                    cursor: pointer;
+                    width: 64px;
+                    height: 32px;
+                    background-color:red;
+                }
+
         .completed-task{
             text-decoration: line-through;
             opacity: 0.3;
@@ -64,14 +120,6 @@ body{
                 cursor: pointer;
                 opacity: 0.6;
             }
-        .edit-button{
-            width:30px;
-            height: 30px;
-        }
-        .delete-button{
-            width: 30px;
-            height: 30px;
-        }
 
     .empty-message {
     color: black;

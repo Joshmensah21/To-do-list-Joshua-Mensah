@@ -1,3 +1,7 @@
+//PRACTICE
+
+//PRACTICE
+
 
 //ADD A TASK
 let plusButton = document.querySelector('.fa-solid.fa-plus');
@@ -63,25 +67,45 @@ function contentChecker(){
 contentChecker();
 
 function createTaskElement(taskText){
+
     let newTask = document.createElement("li");
-    newTask.setAttribute("id",taskIdCounter);
+    newTask.classList.add("task-li");
+    newTask.setAttribute("id", tasksObject.id);
 
     let checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    newTask.appendChild(checkbox);
 
     let taskTextElement = document.createElement("p");
     taskTextElement.textContent = taskText;
     taskTextElement.style.display = "inline";
-    newTask.appendChild(taskTextElement);
 
     let editBtn = document.createElement("button");
+    editBtn.classList.add("edit-btn");
     editBtn.textContent="Edit";
-    newTask.appendChild(editBtn);
 
     let deleteBtn = document.createElement("button");
+    deleteBtn.classList.add('delete-btn');
     deleteBtn.textContent="Delete";
-    newTask.appendChild(deleteBtn);
+
+    let taskDiv = document.createElement("div");
+    taskDiv.classList.add("task-div");
+    taskDiv.setAttribute("id", taskIdCounter);
+
+        newTask.appendChild(taskDiv);
+
+    let checknTextDiv = document.createElement("div");
+    checknTextDiv.classList.add("checkntext-div");
+    checknTextDiv.appendChild(checkbox);
+    checknTextDiv.appendChild(taskTextElement);
+
+        taskDiv.appendChild(checknTextDiv);
+
+    let buttonDiv = document.createElement("div");
+    buttonDiv.classList.add("button-div");
+    buttonDiv.appendChild(editBtn);
+    buttonDiv.appendChild(deleteBtn);
+
+        taskDiv.appendChild(buttonDiv);
 
     const tasksObject = {
     text: taskText,
@@ -97,7 +121,14 @@ function createTaskElement(taskText){
 }
 
 function objectToTask (taskObject){
+
+    let convTaskDiv = document.createElement("div");
+    convTaskDiv.classList.add("task-div");
+
     let convTask = document.createElement("li");
+    convTask.classList.add("task-li");
+    convTaskDiv.setAttribute("id", taskObject.id);
+        convTask.appendChild(convTaskDiv);
     if (taskObject.completed===true){ 
         convTask.classList.add("completed-task"); 
     }
@@ -105,19 +136,32 @@ function objectToTask (taskObject){
     let convCheckbox = document.createElement("input");
     convCheckbox.type = "checkbox";
     convCheckbox.checked = taskObject.completed;
-    convTask.appendChild(convCheckbox);
 
     let convTaskText = document.createElement("p");
+    convTaskText.classList.add("task-text");
     convTaskText.textContent = taskObject.text; 
-    convTask.appendChild(convTaskText);
 
     let convEditBtn = document.createElement("button");
+    convEditBtn.classList.add('edit-btn');
     convEditBtn.textContent = "Edit";
-    convTask.appendChild(convEditBtn);
 
     let convDeleteBtn = document.createElement("button");
+    convDeleteBtn.classList.add('delete-btn');
     convDeleteBtn.textContent = "Delete";
-    convTask.appendChild(convDeleteBtn);
+
+    let convChecknText = document.createElement("div");
+    convChecknText.classList.add("checkntext-div");
+    convChecknText.appendChild(convCheckbox);
+    convChecknText.appendChild(convTaskText);
+
+        convTaskDiv.appendChild(convChecknText);
+
+    let convButtonDiv = document.createElement("div");
+    convButtonDiv.classList.add("button-div");
+    convButtonDiv.appendChild(convEditBtn);
+    convButtonDiv.appendChild(convDeleteBtn);
+
+        convTaskDiv.appendChild(convButtonDiv);
     
     return convTask;
     }
@@ -142,7 +186,7 @@ function objectToTask (taskObject){
         //Delete Button Code below...
 
         } else if(event.target.tagName==="BUTTON" && event.target.textContent==="Delete"){
-            let taskToDelete = event.target.parentElement;
+            let taskToDelete = event.target.closest('.task-div');
             taskToDelete.remove();
             
             const idSelectedTaskNumber = parseInt(taskToDelete.id);
