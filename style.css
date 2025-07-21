@@ -60,7 +60,7 @@ body{
 #task-list-display{
     margin-top: 10vh;
     margin-bottom: 10vh;
-    width: 40vw;
+    width: 80vw;
     height: 60vh;
     border: solid 2px black;
 }
@@ -77,13 +77,13 @@ body{
             font-family: 'Inter';
             display: flex;
             flex-direction: column;
+            /*border: solid 3px darkgreen;*/
             
         }
 
             .task-div{
                 display: flex;
                 flex-flow: column wrap;
-                border: solid 3px darkgreen;
             }
                 .task-text{
                 font-family:'Inter';
@@ -120,6 +120,10 @@ body{
                 cursor: pointer;
                 opacity: 0.6;
             }
+            .faded-button{
+                opacity:0.3;
+            }
+            
 
     .empty-message {
     color: black;
@@ -131,7 +135,8 @@ body{
 
 #edit-pop-up{
     margin: 0 auto;
-    display:none;
+    position: absolute;
+    display: none;
     align-items: center;
     justify-content: center;
     flex-direction: column;

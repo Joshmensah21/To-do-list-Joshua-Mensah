@@ -68,12 +68,22 @@ contentChecker();
 
 function createTaskElement(taskText){
 
+    const tasksObject = {
+    text: taskText,
+    completed: false, 
+    id: taskIdCounter
+    };
+    tasksArray.push(tasksObject);
+    console.log(tasksArray);
+
+    taskIdCounter++;
+
     let newTask = document.createElement("li");
     newTask.classList.add("task-li");
-    newTask.setAttribute("id", tasksObject.id);
 
     let checkbox = document.createElement("input");
     checkbox.type = "checkbox";
+    checkbox.classList.add("checkbox");
 
     let taskTextElement = document.createElement("p");
     taskTextElement.textContent = taskText;
@@ -106,16 +116,6 @@ function createTaskElement(taskText){
     buttonDiv.appendChild(deleteBtn);
 
         taskDiv.appendChild(buttonDiv);
-
-    const tasksObject = {
-    text: taskText,
-    completed: false, 
-    id: taskIdCounter
-    };
-    tasksArray.push(tasksObject);
-    console.log(tasksArray);
-
-    taskIdCounter++;
 
     return newTask;
 }
@@ -172,19 +172,27 @@ function objectToTask (taskObject){
 
         //Edit Button Code
         if(event.target.tagName==="BUTTON" && event.target.textContent==="Edit"){
-        let taskToEdit = event.target.parentElement;
+        let taskToEdit = event.target.closest('.task-div');
         let textElement = taskToEdit.querySelector("p");
         let textToEdit = textElement.textContent;
         
         popUpInput.value=textToEdit;
+        
+        const editPopUpBox = document.getElementById("edit-pop-up");
+        const taskDivBoxInfo = taskToEdit.getBoundingClientRect();
+            const offsetX = -5;
+            const offsetY = 88;
+            
+            editPopUpBox.style.top = (taskDivBoxInfo.top + offsetY) + "px";
+            editPopUpBox.style.left = (taskDivBoxInfo.left + offsetX) + "px";
+
         popUp.style.display="flex";
 
         taskTextSpace = textElement;
 
         idSelectedTask = taskToEdit.getAttribute("id");
         
-        //Delete Button Code below...
-
+            //Delete Button Code below...
         } else if(event.target.tagName==="BUTTON" && event.target.textContent==="Delete"){
             let taskToDelete = event.target.closest('.task-div');
             taskToDelete.remove();
@@ -192,19 +200,33 @@ function objectToTask (taskObject){
             const idSelectedTaskNumber = parseInt(taskToDelete.id);
             tasksArray = tasksArray.filter(taskObject => taskObject.id !== idSelectedTaskNumber);
             contentChecker();
+            
             saveTasksToLocalStorage();
+            
 
         //Checkbox Code Below...
 
         } else if(event.target.type==="checkbox"){
-            let checkedTask = event.target.parentElement;
-            checkedTask.classList.toggle("completed-task");
-            const idSelectedTaskNumber = parseInt(checkedTask.id);
-            let corrTaskObject = tasksArray.find(taskObject=>taskObject.id=== idSelectedTaskNumber); // finding corresponding taskObject to checked task
+            let checknTextDiv = event.target.closest(".checkntext-div");
+            let taskDiv = checknTextDiv.parentElement;
+            let buttonDiv = taskDiv.querySelector(".button-div");
+            let editBtn = buttonDiv.querySelector(".edit-btn");
+            let deleteBtn = buttonDiv.querySelector(".delete-btn");
+
+            checknTextDiv.classList.toggle("completed-task");
+            editBtn.classList.toggle("faded-button");
+            deleteBtn.classList.toggle("faded-button");
+
+            const idSelectedTaskNumber = parseInt(taskDiv.id);
+            let corrTaskObject = tasksArray.find(taskObject=>taskObject.id === idSelectedTaskNumber); // finding corresponding taskObject to checked task
             corrTaskObject.completed = event.target.checked;
+            
             saveTasksToLocalStorage();
+        
         } 
+
     })
+    
     
 //CREATE A TASK BY PLUS BUTTON
 
@@ -214,6 +236,7 @@ function objectToTask (taskObject){
         tasks.appendChild(newTask);
         input.value="";
         contentChecker();
+        saveTasksToLocalStorage();
 });
 
 // CREATE A TASK BY ENTER KEY
@@ -226,8 +249,24 @@ input.addEventListener("keydown",(event)=>{
         input.value="";
 
         contentChecker();
+        saveTasksToLocalStorage();
         
     }
+})
+
+// SAVE EDITS TO A TASK BY ENTER KEY
+popUpInput.addEventListener("keydown",(event)=>{
+    if(event.key==='Enter'){
+            taskTextSpace.textContent = popUpInput.value;
+            popUp.style.display="none";
+
+            let idSelectedTaskNumber = parseInt(idSelectedTask);
+            const taskToUpdate = tasksArray.find((currentObject)=>currentObject.id===idSelectedTaskNumber);
+            taskToUpdate.text = popUpInput.value;
+            taskTextSpace.textContent = popUpInput.value;
+            popUp.style.display="none";
+
+        } 
 })
 
 //SAVE BUTTON
