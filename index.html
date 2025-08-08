@@ -19,12 +19,20 @@
         <h1 class="main-title">TodoDay</h1>
         <div id="task-input-section">
             <label for="type-task" class="type-task-space">
-                <input type="text" id="type-task" name="user-type-task" placeholder="Create a new task e.g. Wash the car">
+                <input type="text" id="type-task" name="user-type-task" placeholder="New Task">
                 <i class="fa-solid fa-plus"></i>
             </label>
         
         </div>
         <div id="task-list-display">
+            <div id="filter-button-container">
+                <button id="filter-all" class="filter-btn">All Tasks</button>
+                <button id="filter-high-priority" class="filter-btn">High Priority</button>
+                <button id="filter-medium-priority" class="filter-btn">Medium Priority</button>
+                <button id="filter-low-priority" class="filter-btn">Low Priority</button>
+                <button id="filter-completed" class="filter-btn">Complete</button>
+                <button id="filter-recently-deleted" class="filter-btn">Recently Deleted</button>
+            </div>
             <ol class="list-of-tasks">
                 <li class="empty-message"></li>
             </ol>

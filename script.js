@@ -1,4 +1,22 @@
 //PRACTICE
+const nums = [14, 3, 9, 7, 2, 5];;
+
+function bubbleSort(){
+    for(let i=0; i<nums.length; i++){
+        for(let j=0; j<nums.length-i-1;j++){
+            if(nums[j]<nums[j+1]){
+                let temp = nums[j]; 
+                nums[j] = nums[j+1];
+                nums[j+1] = temp;
+            }
+        }
+    }
+    return nums;
+}
+
+    
+console.log(bubbleSort(nums));
+
 
 //PRACTICE
 
@@ -25,34 +43,33 @@ function saveTasksToLocalStorage(){
     localStorage.setItem('taskList', stringOfTasks);
 }
 
+function renderTasks(tasksToRender){
+
+tasks.innerHTML = ''; 
+    tasksToRender.forEach(function(taskObject){
+        const retrievedTask = objectToTask(taskObject);
+        tasks.appendChild(retrievedTask);
+    });
+
+}
+
 function loadTasksFromLocalStorage(){
-    const retrievedData = localStorage.getItem('taskList');
+     const retrievedData = localStorage.getItem('taskList');
 
-    if(retrievedData===null){
-            tasksArray=[];
-            taskIdCounter=0;
-            return;
-    } else{
+    if(retrievedData === null){
+        tasksArray = [];
+        taskIdCounter = 0;
+    } else {
         tasksArray = JSON.parse(retrievedData);
-        tasks.innerHTML = ''; //clears existing tasks displayd on page to prevent duplicates
-        tasksArray.forEach(function(taskObject){
-            const retrievedTask = objectToTask(taskObject);
-            tasks.appendChild(retrievedTask);
-        })
-            
         if(tasksArray.length > 0){
-            const arrayOfIds = tasksArray.map((tasksObject)=>{
-            return Number(tasksObject.id);
-            })
-                    
+            const arrayOfIds = tasksArray.map(taskObject => taskObject.id);
             const highestIdNum = Math.max(...arrayOfIds);
-            taskIdCounter = highestIdNum+1;
+            taskIdCounter = highestIdNum + 1;
         }
-            
-
-        }
+    }
 }
 loadTasksFromLocalStorage();
+
 
 function contentChecker(){
     let taskList = tasks.querySelectorAll('li:not(.empty-message)');
@@ -66,7 +83,7 @@ function contentChecker(){
 }
 contentChecker();
 
-function createTaskElement(taskText){
+function createTaskElement(taskText){ 
 
     const tasksObject = {
     text: taskText,
@@ -75,8 +92,7 @@ function createTaskElement(taskText){
     };
     tasksArray.push(tasksObject);
     console.log(tasksArray);
-
-    taskIdCounter++;
+    console.log(tasksObject.id);
 
     let newTask = document.createElement("li");
     newTask.classList.add("task-li");
@@ -86,6 +102,7 @@ function createTaskElement(taskText){
     checkbox.classList.add("checkbox");
 
     let taskTextElement = document.createElement("p");
+    taskTextElement.classList.add("task-text");
     taskTextElement.textContent = taskText;
     taskTextElement.style.display = "inline";
 
@@ -100,13 +117,17 @@ function createTaskElement(taskText){
     let taskDiv = document.createElement("div");
     taskDiv.classList.add("task-div");
     taskDiv.setAttribute("id", taskIdCounter);
-
+    console.log(taskDiv.getAttribute("id"));
         newTask.appendChild(taskDiv);
 
     let checknTextDiv = document.createElement("div");
     checknTextDiv.classList.add("checkntext-div");
-    checknTextDiv.appendChild(checkbox);
-    checknTextDiv.appendChild(taskTextElement);
+
+    let checknTextDivJr = document.createElement("div");
+    checknTextDivJr.classList.add("checkntext-div-jr");
+    checknTextDivJr.appendChild(checkbox);
+    checknTextDivJr.appendChild(taskTextElement);
+    checknTextDiv.appendChild(checknTextDivJr);
 
         taskDiv.appendChild(checknTextDiv);
 
@@ -117,29 +138,35 @@ function createTaskElement(taskText){
 
         taskDiv.appendChild(buttonDiv);
 
+    taskIdCounter++;
+
     return newTask;
 }
 
 function objectToTask (taskObject){
 
+    let convChecknTextDiv = document.createElement("div");
+    convChecknTextDiv.classList.add("checkntext-div");
+
     let convTaskDiv = document.createElement("div");
     convTaskDiv.classList.add("task-div");
-
-    let convTask = document.createElement("li");
-    convTask.classList.add("task-li");
-    convTaskDiv.setAttribute("id", taskObject.id);
-        convTask.appendChild(convTaskDiv);
-    if (taskObject.completed===true){ 
-        convTask.classList.add("completed-task"); 
-    }
+    convTaskDiv.appendChild(convChecknTextDiv);
 
     let convCheckbox = document.createElement("input");
     convCheckbox.type = "checkbox";
     convCheckbox.checked = taskObject.completed;
+    convChecknTextDiv.appendChild(convCheckbox);
 
     let convTaskText = document.createElement("p");
     convTaskText.classList.add("task-text");
-    convTaskText.textContent = taskObject.text; 
+    convTaskText.textContent = taskObject.text;
+    convChecknTextDiv.appendChild(convTaskText);
+
+    let convChecknTextDivJr = document.createElement("div");
+    convChecknTextDivJr.classList.add("checkntext-div-jr");
+    convChecknTextDivJr.appendChild(convCheckbox);
+    convChecknTextDivJr.appendChild(convTaskText);
+    convChecknTextDiv.appendChild(convChecknTextDivJr);
 
     let convEditBtn = document.createElement("button");
     convEditBtn.classList.add('edit-btn');
@@ -149,19 +176,23 @@ function objectToTask (taskObject){
     convDeleteBtn.classList.add('delete-btn');
     convDeleteBtn.textContent = "Delete";
 
-    let convChecknText = document.createElement("div");
-    convChecknText.classList.add("checkntext-div");
-    convChecknText.appendChild(convCheckbox);
-    convChecknText.appendChild(convTaskText);
-
-        convTaskDiv.appendChild(convChecknText);
-
     let convButtonDiv = document.createElement("div");
     convButtonDiv.classList.add("button-div");
     convButtonDiv.appendChild(convEditBtn);
     convButtonDiv.appendChild(convDeleteBtn);
 
         convTaskDiv.appendChild(convButtonDiv);
+
+    let convTask = document.createElement("li");
+    convTask.classList.add("task-li");
+    convTaskDiv.setAttribute("id", taskObject.id);
+        convTask.appendChild(convTaskDiv);
+console.log("Task ID:", taskObject.id, "Completed status on load:", taskObject.completed); 
+
+    if (taskObject.completed===true){ 
+        convChecknTextDiv.classList.toggle("completed-task"); 
+        convButtonDiv.classList.toggle("faded-button");
+    }
     
     return convTask;
     }
@@ -194,11 +225,20 @@ function objectToTask (taskObject){
         
             //Delete Button Code below...
         } else if(event.target.tagName==="BUTTON" && event.target.textContent==="Delete"){
-            let taskToDelete = event.target.closest('.task-div');
-            taskToDelete.remove();
-            
-            const idSelectedTaskNumber = parseInt(taskToDelete.id);
-            tasksArray = tasksArray.filter(taskObject => taskObject.id !== idSelectedTaskNumber);
+        let taskToDelete = event.target.closest('.task-li'); 
+
+        let taskContainId = event.target.closest('.task-div'); 
+
+        taskToDelete.remove(); 
+
+        const idSelectedTaskNumber = parseInt(taskContainId.id);    
+
+        tasksArray = tasksArray.filter(taskObject => {     
+
+        return taskObject.id !== idSelectedTaskNumber    
+
+        });
+        
             contentChecker();
             
             saveTasksToLocalStorage();
@@ -207,43 +247,44 @@ function objectToTask (taskObject){
         //Checkbox Code Below...
 
         } else if(event.target.type==="checkbox"){
-            let checknTextDiv = event.target.closest(".checkntext-div");
-            let taskDiv = checknTextDiv.parentElement;
-            let buttonDiv = taskDiv.querySelector(".button-div");
-            let editBtn = buttonDiv.querySelector(".edit-btn");
-            let deleteBtn = buttonDiv.querySelector(".delete-btn");
+    let checknTextDiv = event.target.closest(".checkntext-div");
+    let taskDiv = checknTextDiv.parentElement;
+    let buttonDiv = taskDiv.querySelector(".button-div");
 
-            checknTextDiv.classList.toggle("completed-task");
-            editBtn.classList.toggle("faded-button");
-            deleteBtn.classList.toggle("faded-button");
+    checknTextDiv.classList.toggle("completed-task");
+    buttonDiv.classList.toggle("faded-button");
+    
+    const idSelectedTaskNumber = parseInt(taskDiv.id);
+    let corrTaskObject = tasksArray.find(taskObject => taskObject.id === idSelectedTaskNumber);
 
-            const idSelectedTaskNumber = parseInt(taskDiv.id);
-            let corrTaskObject = tasksArray.find(taskObject=>taskObject.id === idSelectedTaskNumber); // finding corresponding taskObject to checked task
-            corrTaskObject.completed = event.target.checked;
-            
-            saveTasksToLocalStorage();
-        
-        } 
-
+    corrTaskObject.completed = event.target.checked;
+    console.log(tasksArray);
+    saveTasksToLocalStorage();
+}
     })
     
     
 //CREATE A TASK BY PLUS BUTTON
 
     plusButton.addEventListener("click", ()=>{
-        //New Task
+        if(input.value===""){
+            alert("Please type a value");
+    } else if(input.value!==""){
         let newTask = createTaskElement(input.value);
         tasks.appendChild(newTask);
         input.value="";
         contentChecker();
         saveTasksToLocalStorage();
+    }
 });
 
 // CREATE A TASK BY ENTER KEY
 
 input.addEventListener("keydown",(event)=>{
-    if(event.key==='Enter'){
-        //New Task
+    if(input.value==="" && event.key==='Enter'){
+        alert("Please type a value");
+    } else if(event.key==='Enter'){
+        
         let newTask = createTaskElement(input.value);
         tasks.appendChild(newTask);
         input.value="";
@@ -288,6 +329,29 @@ popUpInput.addEventListener("keydown",(event)=>{
     popUp.style.display="none";
     })
     
+//FILTER FUNCTIONING
+    const filterAllTasks = document.getElementById("filter-all");
+    const filterCompleted = document.getElementById("filter-completed");
+    const filterInProgress = document.getElementById("filter-in-progress");
+    const filterIncomplete = document.getElementById("filter-incomplete");
+    const filterRecentDel = document.getElementById("filter-recently-deleted");
 
+    filterAllTasks.addEventListener("click",()=>{
+       loadTasksFromLocalStorage();
+       renderTasks(tasksArray);
+    }
+    )
 
+    //Completed filter needs all the completed tasks 
+    filterCompleted.addEventListener("click",()=>{
+
+         loadTasksFromLocalStorage(); 
+         const completedTasks = tasksArray.filter(taskObject => taskObject.completed === true);
+         renderTasks(completedTasks); 
+        });
+
+    //
+    
+loadTasksFromLocalStorage();
+renderTasks(tasksArray);
 

@@ -5,13 +5,14 @@
 }
 body{
     overflow-x: hidden;
+    overflow-y: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
 
     font-size: 16px;
-    background-color: #577596;
+    background-color:#D2E0EF;
 
 }
 
@@ -24,22 +25,26 @@ body{
     justify-content: flex-start;
     align-items: center;
     flex-direction:column;
-    width: 90%;
+    width: 95%;
     height: 90vh;
-    background-color:#2196F3;
-    border: solid 4px #F2A122;
+    background-color:#78a3cf;
+    color: #040F16;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    border: solid 4px #616466;
 }
     .main-title{
     font-family: "Poppins", sans-serif;
     font-weight: 800;
     font-style: normal;
-    color: white;
+    color: #040F16;
     
     }
 
 .fa-plus {
     font-size: 20px;
     border: solid 1px black;
+    background-color:#fcb644;
 }
 
 .fa-plus:hover{
@@ -62,55 +67,101 @@ body{
     margin-bottom: 10vh;
     width: 80vw;
     height: 60vh;
-    border: solid 2px black;
+    /*border: solid 2px black;*/
 }
+
+    #filter-button-container{
+        display: flex;
+        margin: auto;
+        justify-content: center;
+        max-width:750px;
+        gap: 32px;
+        flex-wrap: wrap;
+     
+    }
+        .filter-btn{
+            font-family: Inter;
+            background-color: #17557C;
+            color: white;
+            height: 32px;
+            min-width: 136px;
+            cursor: pointer;
+        }
 
     .list-of-tasks{
         list-style:none;
         padding-left: 0; 
         margin-left: 0;
+        margin-top: 32px;
         display: flex;
+        align-items:center;
         flex-direction: column;
-        gap: 40px;
+        gap: 16px;
+        
     }
         .task-li{
             font-family: 'Inter';
             display: flex;
             flex-direction: column;
+            background-color: #D2E0EF;
+            padding: 8px;
+            width: 568px;
+            height: 96px;
+            border-radius: 8px;
+            overflow-wrap: break-word;
+            
+            
             /*border: solid 3px darkgreen;*/
             
         }
-
             .task-div{
                 display: flex;
                 flex-flow: column wrap;
+                overflow-wrap: break-word;
+                
             }
-                .task-text{
-                font-family:'Inter';
-                display: inline;
-                }
                 .checkntext-div{
-                    display: flex;
-                    flex-direction: row;
-                }
+                            display: flex;
+                            flex-direction: row;
+                            flex-wrap: wrap;
+                            width: 568px;
+                            
+                            
+                            
+                        }
+                    .checkntext-div-jr{
+                        display: flex;
+                        min-width: 0;
+                    }
+                        .task-text{
+                        font-family:'Inter';
+                        white-space: normal;
+                        flex-grow: 1;
+                        min-width: 0;
+                    
+                        
+                        }
+                
 
-            .button-div{
-                    display: flex;
-                    flex-direction: row;
-                }
-                .edit-btn{
-                    cursor: pointer;
-                    margin-right: 8px;
-                    width: 64px;
-                    height: 32px;
-                    background-color:#F2A122;
-                }
-                .delete-btn{
-                    cursor: pointer;
-                    width: 64px;
-                    height: 32px;
-                    background-color:red;
-                }
+                .button-div{
+                            display: flex;
+                            flex-direction: row;
+                        }
+                    .edit-btn{
+                        cursor: pointer;
+                        margin-right: 8px;
+                        width: 64px;
+                        height: 32px;
+                        background-color: #396DA1;
+                        color: white;
+                    }
+                    .delete-btn{
+                        cursor: pointer;
+                        width: 64px;
+                        height: 32px;
+                        background-color:#b13636;
+                        color: white;
+                    }
 
         .completed-task{
             text-decoration: line-through;
