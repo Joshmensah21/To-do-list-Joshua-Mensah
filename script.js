@@ -1,25 +1,20 @@
 //PRACTICE
-const nums = [14, 3, 9, 7, 2, 5];;
-
-function bubbleSort(){
-    for(let i=0; i<nums.length; i++){
-        for(let j=0; j<nums.length-i-1;j++){
-            if(nums[j]<nums[j+1]){
-                let temp = nums[j]; 
-                nums[j] = nums[j+1];
-                nums[j+1] = temp;
-            }
-        }
-    }
-    return nums;
-}
-
-    
-console.log(bubbleSort(nums));
 
 
 //PRACTICE
 
+//GOAL:
+/*Add the UI elements to the povp-up: When the edit pop-up is displayed, 
+you need to add a way for the user to choose the priority (e.g., three buttons, a dropdown menu, etc.).
+
+Update the task object: When the user clicks the "Save" button in the pop-up, 
+you'll need to find the correct task object in your tasksArray and update its new priority property.
+
+Save the data: After the object is updated, 
+you must call your function to save the tasksArray to local storage.
+
+Render the visual indicator: Finally, you will need to update the display of the task to show
+the new colored dot or icon.*/
 
 //ADD A TASK
 let plusButton = document.querySelector('.fa-solid.fa-plus');
@@ -203,28 +198,24 @@ console.log("Task ID:", taskObject.id, "Completed status on load:", taskObject.c
 
         //Edit Button Code
         if(event.target.tagName==="BUTTON" && event.target.textContent==="Edit"){
+            
         let taskToEdit = event.target.closest('.task-div');
         let textElement = taskToEdit.querySelector("p");
         let textToEdit = textElement.textContent;
         
+        const modalOverlay = document.getElementById("modal-overlay");
+        const appContainer = document.getElementById("app-container");
+        modalOverlay.classList.add("visible");
+        appContainer.classList.add("opacity");
+       
+        popUp.classList.add("visible");
         popUpInput.value=textToEdit;
-        
-        const editPopUpBox = document.getElementById("edit-pop-up");
-        const taskDivBoxInfo = taskToEdit.getBoundingClientRect();
-            const offsetX = -5;
-            const offsetY = 88;
-            
-            editPopUpBox.style.top = (taskDivBoxInfo.top + offsetY) + "px";
-            editPopUpBox.style.left = (taskDivBoxInfo.left + offsetX) + "px";
-
-        popUp.style.display="flex";
-
         taskTextSpace = textElement;
-
-        idSelectedTask = taskToEdit.getAttribute("id");
+        idSelectedTask = taskToEdit.getAttribute("id");
         
-            //Delete Button Code below...
-        } else if(event.target.tagName==="BUTTON" && event.target.textContent==="Delete"){
+           
+        }  //Delete Button Code below...
+        else if(event.target.tagName==="BUTTON" && event.target.textContent==="Delete"){
         let taskToDelete = event.target.closest('.task-li'); 
 
         let taskContainId = event.target.closest('.task-div'); 
@@ -296,37 +287,53 @@ input.addEventListener("keydown",(event)=>{
 })
 
 // SAVE EDITS TO A TASK BY ENTER KEY
-popUpInput.addEventListener("keydown",(event)=>{
-    if(event.key==='Enter'){
+document.addEventListener("keydown",(event)=>{
+    if(event.key==='Enter' && popUp.classList.contains("visible")){
+        event.preventDefault();
+        console.log("popUp.style.display:", popUp.classList);
             taskTextSpace.textContent = popUpInput.value;
-            popUp.style.display="none";
+            popUp.classList.remove("visible");
+
+            const modalOverlay = document.getElementById("modal-overlay");
+            const appContainer = document.getElementById("app-container");
+            modalOverlay.classList.remove("visible");
+            appContainer.classList.remove("opacity");
 
             let idSelectedTaskNumber = parseInt(idSelectedTask);
             const taskToUpdate = tasksArray.find((currentObject)=>currentObject.id===idSelectedTaskNumber);
             taskToUpdate.text = popUpInput.value;
             taskTextSpace.textContent = popUpInput.value;
-            popUp.style.display="none";
-
+            popUp.classList.remove("visible");
+        console.log("popUp.style.display:", popUp.classList);
         } 
 })
 
 //SAVE BUTTON
     saveBtn.addEventListener("click",()=>{
     taskTextSpace.textContent = popUpInput.value;
-    popUp.style.display="none";
+    popUp.classList.remove("visible");
 
     let idSelectedTaskNumber = parseInt(idSelectedTask);
     const taskToUpdate = tasksArray.find((currentObject)=>currentObject.id===idSelectedTaskNumber);
     taskToUpdate.text = popUpInput.value;
     taskTextSpace.textContent = popUpInput.value;
-    popUp.style.display="none";
+
+    //modal display none + opacity remove
+    const modalOverlay = document.getElementById("modal-overlay");
+    const appContainer = document.getElementById("app-container");
+    modalOverlay.classList.remove("visible");
+    appContainer.classList.remove("opacity");
     
     saveTasksToLocalStorage();
     })
 
 //CANCEL BUTTON
     cancelBtn.addEventListener("click",()=>{
-    popUp.style.display="none";
+    popUp.classList.remove("visible");
+    const modalOverlay = document.getElementById("modal-overlay");
+    const appContainer = document.getElementById("app-container");
+    modalOverlay.classList.remove("visible");
+    appContainer.classList.remove("opacity");
     })
     
 //FILTER FUNCTIONING

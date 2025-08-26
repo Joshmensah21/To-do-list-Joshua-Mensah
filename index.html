@@ -15,40 +15,68 @@
     <title>TodoDay</title> 
 </head>
 <body>
-    <div id="main-container">
-        <h1 class="main-title">TodoDay</h1>
-        <div id="task-input-section">
-            <label for="type-task" class="type-task-space">
-                <input type="text" id="type-task" name="user-type-task" placeholder="New Task">
-                <i class="fa-solid fa-plus"></i>
-            </label>
-        
-        </div>
-        <div id="task-list-display">
-            <div id="filter-button-container">
-                <button id="filter-all" class="filter-btn">All Tasks</button>
-                <button id="filter-high-priority" class="filter-btn">High Priority</button>
-                <button id="filter-medium-priority" class="filter-btn">Medium Priority</button>
-                <button id="filter-low-priority" class="filter-btn">Low Priority</button>
-                <button id="filter-completed" class="filter-btn">Complete</button>
-                <button id="filter-recently-deleted" class="filter-btn">Recently Deleted</button>
-            </div>
-            <ol class="list-of-tasks">
-                <li class="empty-message"></li>
-            </ol>
-            <!--EDIT POP UP-->
-            <div id="edit-pop-up">
-                <input id="edit-tasktext">
-                    <div id="button-container">
-                        <button id="save-btn">Save</button>
-                        <button id="cancel-btn">Cancel</button>
+    <div id="app-container">
+            <div id="content-container">
+                <h1 class="main-title">Todo<span style="color:#D38303;">Day</span></h1>
+                <div id="task-input-section">
+                    <label for="type-task" class="type-task-space">
+                        <input type="text" id="type-task" name="user-type-task" placeholder="New Task">
+                        <i class="fa-solid fa-plus"></i>
+                    </label>
+                </div>
+                <div id="task-list-display">
+                    <div id="filter-button-container">
+                        <button id="filter-all" class="filter-btn">All Tasks</button>
+                        <button id="filter-completed" class="filter-btn">Complete</button>
+                        <button id="filter-recently-deleted" class="filter-btn">Recently Deleted</button>
+                        <button id="filter-high-priority" class="filter-btn">High Priority</button>
+                        <button id="filter-medium-priority" class="filter-btn">Medium Priority</button>
+                        <button id="filter-low-priority" class="filter-btn">Low Priority</button>
                     </div>
+                    <ol class="list-of-tasks">
+                        <li class="empty-message"></li>
+                    </ol>
+                </div>
             </div>
-        </div>
-            <!--PRACTICE-->
-   
-            <!--PRACTICE-->
-    </div>
+    </div> 
+    <!--EDIT POP UP-->
+    <div id="modal-overlay">
+                <div id="edit-pop-up">
+                    <input id="edit-tasktext">
+                        <div id="pop-up-items-screen">
+                            <div id="pop-up-1st-half">
+                                <div class="edit-popup-option">
+                                    <p class="edit-popup-subtitles"><i class="fa-regular fa-clock"></i>When ToDo?</p>
+                                </div>
+                                <div class="edit-popup-option">
+                                    <p class="edit-popup-subtitles"><i class="fa-regular fa-calendar-days"></i>Due Date</p>
+                                </div>
+                                <div class="edit-popup-option">
+                                    <p class="edit-popup-subtitles"><i class="fa-regular fa-bell"></i>Reminder</p>
+                                </div>
+                                <div class="edit-popup-option">
+                                    <p class="edit-popup-subtitles"><i class="fa-solid fa-repeat"></i>Repeat</p>
+                                </div>
+                            </div>
+                            <div id="pop-up-2nd-half">
+                                <div class="edit-popup-option">
+                                    <p class="edit-popup-subtitles">Categories</p>
+                                </div>
+                                <div id="priority-flag-container" class="edit-popup-option">
+                                    <p class="edit-popup-subtitles">Priority:</p>
+                                    <i id="high-priority-flag" class="fa-solid fa-flag"></i>
+                                    <i id="medium-priority-flag" class="fa-solid fa-flag"></i>
+                                    <i id="low-priority-flag" class="fa-solid fa-flag"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="button-container">
+                            <button id="save-btn">Save</button>
+                            <button id="cancel-btn">Cancel</button>
+                        </div>
+                </div>
+        
+    </div>   
     <script src="./script.js"></script>
 </body>
 </html>
